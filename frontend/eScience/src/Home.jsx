@@ -7,24 +7,13 @@ import './App.css'
 
 function Home() {
     const [count, setCount] = useState(0)
-    const [data, setdata] = useState({
-        name: "",
-        age: 0,
-        date: "",
-        programming: "",
-    });
+    const [data, setdata] = useState([]);
     useEffect(() => {
         // Using fetch to fetch the api from
         // flask server it will be redirected to proxy
         fetch("/api/data").then((res) =>
-            res.json().then((data) => {
-                // Setting a data from api
-                setdata({
-                    name: data.Name,
-                    age: data.Age,
-                    date: data.Date,
-                    programming: data.programming,
-                });
+            res.json().then((data2) => {
+                setdata(data2);
             })
         );
     }, []);
@@ -46,11 +35,23 @@ function Home() {
                 </button>
                 <p>
                     Edit <code>src/App.jsx</code> and save to test HMR
-                    <p>{data.name}</p>
-                    <p>{data.age}</p>
-                    <p>{data.date}</p>
-                    <p>{data.programming}</p>
                 </p>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Date</th>
+                        <th>Programming</th>
+                    </tr>
+                    {data.map(item => (
+                        <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>{item.age}</td>
+                            <td>{item.date}</td>
+                            <td>{item.programming}</td>
+                        </tr>
+                    ))}
+                </table>
             </div>
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
